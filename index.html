@@ -9,13 +9,13 @@
     <title>Memegen</title>
 </head>
 
-<body>
+<body onload="onLoad()">
     <div class="header-main">
         <div class="nav-bar-container">
             <img src="logo/Layer 2.png" srcset="logo/Layer 2@2x.png, logo/Layer 2@3x.png" class="layer-2">
             <ul class="nav-bar flex clean-list">
-                <li><a href="#" class="active">Gallery</a></li>
-                <li><a href="#">Memes</a></li>
+                <li><a href="#" class="active" onclick="onGoToGallery(this)">Gallery</a></li>
+                <li><a href="#" onclick="onGoToMemeGallery(this)">Memes</a></li>
                 <li><a href="#">About</a></li>
             </ul>
         </div>
@@ -28,25 +28,32 @@
         </div>
     </div>
 
-    <section class="grid-container">
-        <img class='gallery' src="./img/1.jpg" alt="">
-        <img class='gallery' src="./img/2.jpg" alt="">
-        <img class='gallery' src="./img/3.jpg" alt="">
-        <img class='gallery' src="./img/4.jpg" alt="">
-        <img class='gallery' src="./img/5.jpg" alt="">
-        <img class='gallery' src="./img/6.jpg" alt="">
-        <img class='gallery' src="./img/7.jpg" alt="">
-        <img class='gallery' src="./img/8.jpg" alt="">
-        <img class='gallery' src="./img/9.jpg" alt="">
-        <img class='gallery' src="./img/10.jpg" alt="">
-        <img class='gallery' src="./img/11.jpg" alt="">
-        <img class='gallery' src="./img/12.jpg" alt="">
-        <img class='gallery' src="./img/13.jpg" alt="">
-        <img class='gallery' src="./img/14.jpg" alt="">
-        <img class='gallery' src="./img/15.jpg" alt="">
-        <img class='gallery' src="./img/16.jpg" alt="">
-        <img class='gallery' src="./img/17.jpg" alt="">
-        <img class='gallery' src="./img/18.jpg" alt="">
+    <section class="gallery-container"></section>
+
+    <section class="meme-container">
+        <canvas class="meme-container canvas"></canvas>
+        <div class='meme-container-btns'>
+            <input class="meme-edit text-editor" type="text" placeholder="Insert some text here..." >
+            <button class="meme-edit upDown"></button>
+            <div class="meme-edit add"></div>
+            <div class="meme-edit trash"></div>
+            <div class="meme-edit font-increase"></div>
+            <div class="meme-edit font-decrease"></div>
+            <div class="meme-edit align-to-left" title="align left"></div>
+            <div class="meme-edit align-to-center" title="align center"></div>
+            <div class="meme-edit align-to-right" title="align right"></div>
+            <div class="meme-edit impact"></div>
+            <div class="meme-edit text-stroke"></div>
+            <div class="meme-edit paint"></div>
+            <input class="meme-edit color" type='color' value="#ffffff" >
+            <select class="meme-edit impact">
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+            </select>
+            <div class="meme-edit stickers"></div>
+            <div class="meme-edit btn-share">Share</div>
+        </div>
     </section>
 
     <div class="footer">
@@ -57,8 +64,10 @@
             <span class="all-rights-reserved">all rights reserved 2019</span>
         </div>
     </div>
-    <script src="js/controler.js"></script>
-    <script src="js/data.js"></script>
+
+    <script src="js/generatorController.js"></script>
+    <script src="js/imageServices.js"></script>
+    <script src="js/memeService.js"></script>
 </body>
 
 </html>
