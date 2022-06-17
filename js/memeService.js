@@ -1,24 +1,50 @@
 'use strict'
 
 var gMemes = []
-var gCurrMeme = {
-    selectedImgId: 1,
-    selectedLineIdx: 0,
-    lines: [
-        {
-            txt: '',
-            fontSize: 20,
-            align: 'left',
-            color: 'black',
-            fontFamily: 'Montserrat',
-            //x: 10,
-            y: 20
-        }
-    ]
+var gCurrMeme = _creteNewMeme()
+
+function addEmptyLineToMemeEditor(){
+    gCurrMeme.lines.push(_createNewLine())
+    gCurrMeme.selectedLineIdx = gCurrMeme.lines.length - 1
 }
 
+function _creteNewMeme(){
+    return {
+        id: 0,
+        selectedImgId: 0,
+        url: '',
+        selectedLineIdx: 0,
+        lines: [
+            _createNewLine()
+        ]
+    }
+}
+
+function _createNewLine(){
+    return{
+        text: '',
+        fontSize: 20,
+        align: 'left',
+        color: 'black',
+        fontFamily: 'Montserrat',
+        y: 20
+    }
+}
+
+function clearCurrentMemeData(){
+    gCurrMeme = null 
+    gCurrMeme = _creteNewMeme()
+}
+
+function getMemeIndex(memeId){
+    const index = gMemes.findIndex(meme => meme.id === memeId)
+    return index
+}
 
 function getMeme(memeId) {
-   // const selectedMeme = gImgs.find(img => img.id === memeId)
-    //gMeme = 
+    return gMemes.find(meme => meme.id === memeId)
+}
+
+function createMemeId(){
+    return getMemeId()
 }

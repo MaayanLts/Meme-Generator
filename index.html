@@ -14,9 +14,9 @@
         <div class="nav-bar-container">
             <img src="logo/Layer 2.png" srcset="logo/Layer 2@2x.png, logo/Layer 2@3x.png" class="layer-2">
             <ul class="nav-bar flex clean-list">
-                <li><a href="#" class="active" onclick="onGoToGallery(this)">Gallery</a></li>
-                <li><a href="#" onclick="onGoToMemeGallery(this)">Memes</a></li>
-                <li><a href="#">About</a></li>
+                <li class='menu image-gallery'><a href="#" class="active">Gallery</a></li>
+                <li class='menu meme-gallery'><a href="#">Memes</a></li>
+                <li class='menu about'><a href="#">About</a></li>
             </ul>
         </div>
         <div class="search-container">
@@ -28,13 +28,16 @@
         </div>
     </div>
 
-    <section class="gallery-container"></section>
+    <section class="gallery-container images"></section>
+    <section class="gallery-container memes"></section>
 
     <section class="meme-container">
         <canvas class="meme-container canvas"></canvas>
         <div class='meme-container-btns'>
-            <input class="meme-edit text-editor" type="text" placeholder="Insert some text here..." >
-            <button class="meme-edit upDown"></button>
+            <input class="meme-edit text-editor" type="text" placeholder="Insert text here..." >
+            <div class="meme-edit up"></div>
+            <div class="meme-edit down"></div>
+            <div class="meme-edit upDown"></div>
             <div class="meme-edit add"></div>
             <div class="meme-edit trash"></div>
             <div class="meme-edit font-increase"></div>
@@ -52,7 +55,7 @@
                 <option value="3">3</option>
             </select>
             <div class="meme-edit stickers"></div>
-            <div class="meme-edit btn-share">Share</div>
+            <div class="meme-edit btn-save">Save</div>
         </div>
     </section>
 
@@ -65,6 +68,7 @@
         </div>
     </div>
 
+    <script src="js/utils.js"></script>
     <script src="js/generatorController.js"></script>
     <script src="js/imageServices.js"></script>
     <script src="js/memeService.js"></script>

@@ -37,11 +37,11 @@ body {
     font-weight: 700;
 } 
 
-.nav-bar-container .nav-bar a:hover {
+.menu a:hover {
     box-shadow: inset 0px -2px 0px #040a2c;
 }
 
-.nav-bar-container .nav-bar a.active {
+.menu a.active {
     box-shadow: inset 0px -2px 0px #040a2c;
     color: #040a2c;
     cursor: pointer;
@@ -79,10 +79,10 @@ img.layer-2 {
     object-fit: contain;
 }
 
-.gallery-container {
+.gallery-container{
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(200px, auto));
-    grid-auto-rows: minmax(100px, auto);
+    grid-auto-rows: minmax(200px, auto);
     grid-auto-flow: dense;
     gap: 10px;
     padding: 10px;
@@ -116,7 +116,7 @@ img.gallery {
     gap: 10px;
     grid-template-areas:
     "txt-edit txt-edit txt-edit txt-edit txt-edit"
-    ". upDown _add trash ."
+    "up down upDown _add trash"
     "incs decs _left _center _right"
     "impact impact impact _stroke paint"
     "stickers stickers stickers stickers stickers"
@@ -140,8 +140,18 @@ img.gallery {
     grid-area: txt-edit;
 }
 
+.meme-edit.up{
+    background-image: url('../icons/up-arrow.png');  
+    grid-area: up; 
+}
+
+.meme-edit.down{
+    background-image: url('../icons/down-arrow.png');  
+    grid-area: down; 
+}
+
 .meme-edit.upDown{
-    background-image: url('../icons/up-and-down-opposite-double-arrows-side-by-side.png');  
+    background-image: url('../icons/up-and-down-arrows.png');  
     grid-area: upDown; 
 }
 
@@ -203,7 +213,7 @@ img.gallery {
     grid-area: stickers;
 } 
 
-.meme-edit.btn-share{
+.meme-edit.btn-save{
     grid-area: share;
     background-color: var(--clr1);
     font-family: 'Montserrat', sans-serif;
@@ -213,15 +223,6 @@ img.gallery {
     font-size: 20px;
     padding-top: 20px;
 } 
-
-/* .memeText{
-    position: fixed;
-    font-size: 20px;
-    margin-top:  50px;
-    margin-left: 40px;
-    height: 3em;
-    border: 1px #e3e3e3 ridge;
-} */
 
 .social-links {
     background-color: #ffff;
