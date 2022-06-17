@@ -22,8 +22,8 @@
         <div class="search-container">
             <div class="input-container">
                 <input class="search-input" type="text" placeholder="Enter search keyword ">
-                <img class='search-icon' src="icons/search-icon.png" >
-            </div>    
+                <img class='search-icon' src="icons/search-icon.png">
+            </div>
             <div class="keywords"></div>
         </div>
     </div>
@@ -33,8 +33,8 @@
 
     <section class="meme-container">
         <canvas class="meme-container canvas"></canvas>
-        <div class='meme-container-btns'>
-            <input class="meme-edit text-editor" type="text" placeholder="Insert text here..." >
+        <div class='meme-container btns'>
+            <input class="meme-edit text-editor" type="text" placeholder="Insert text here...">
             <div class="meme-edit up"></div>
             <div class="meme-edit down"></div>
             <div class="meme-edit upDown"></div>
@@ -45,30 +45,45 @@
             <div class="meme-edit align-to-left" title="align left"></div>
             <div class="meme-edit align-to-center" title="align center"></div>
             <div class="meme-edit align-to-right" title="align right"></div>
-            <div class="meme-edit impact"></div>
             <div class="meme-edit text-stroke"></div>
+            <input class="meme-edit stroke-color" type='color' value="#ffffff">
             <div class="meme-edit paint"></div>
-            <input class="meme-edit color" type='color' value="#ffffff" >
-            <select class="meme-edit impact">
+            <input class="meme-edit text-color" type='color' value="#ffffff">
+            <!-- <select class="meme-edit impact">
                 <option value="1">1</option>
                 <option value="2">2</option>
                 <option value="3">3</option>
-            </select>
-            <div class="meme-edit stickers"></div>
-            <div class="meme-edit btn-save">Save</div>
+            </select> -->
+            <!-- <div class="meme-edit stickers"></div> -->
+            <div class="meme-edit btn-action save">Save</div>
+            <div class="meme-edit btn-action delete">Delete</div>
         </div>
     </section>
 
-    <div class="footer">
-        <div class="social-links">
-
+    <about>
+        <div class="about-img">
+            <img src="img/cssMeme.PNG">
         </div>
+        <div class="about-text">
+            <h1 class="about-text title">Who was the first to make memes?</h1>
+            <p class="about-text paragraph">Emoticons are one of the first resemblances of internet memes.
+                In 1982, Scott E. Fahlman introduced the sideways smiley face formed by punctuation marks,
+                with an intention to create emotion and expressions with the use of digital imagery.
+            </p>
+        </div>
+    </about>
+
+    <div class="footer">
+        <!-- <div class="social-links">
+
+        </div> -->
         <div class="copyright">
             <span class="all-rights-reserved">all rights reserved 2019</span>
         </div>
     </div>
 
     <script src="js/utils.js"></script>
+    <script src="js/storageService.js"></script>
     <script src="js/generatorController.js"></script>
     <script src="js/imageServices.js"></script>
     <script src="js/memeService.js"></script>

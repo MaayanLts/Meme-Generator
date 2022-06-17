@@ -2,6 +2,17 @@
 
 var gMemes = []
 var gCurrMeme = _creteNewMeme()
+var MEMES = 'MEMES'
+
+function loadMemesFromStorage(){
+    const memes = loadFromStorage(MEMES)
+    if(memes)
+        gMemes = memes
+}
+
+function saveMemesToStorage(){
+    saveToStorage(MEMES, gMemes)
+}
 
 function addEmptyLineToMemeEditor(){
     gCurrMeme.lines.push(_createNewLine())
@@ -24,9 +35,10 @@ function _createNewLine(){
     return{
         text: '',
         fontSize: 20,
-        align: 'left',
+        align: 'center',
         color: 'black',
-        fontFamily: 'Montserrat',
+        strokeStyle: 'black',
+        //fontFamily: 'Montserrat',
         y: 20
     }
 }

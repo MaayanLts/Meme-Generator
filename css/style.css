@@ -79,6 +79,30 @@ img.layer-2 {
     object-fit: contain;
 }
 
+about{
+    display:flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 50vw;
+    margin: auto;
+}
+
+about img{
+    height: 50vh;
+}
+
+.about-text{
+    display:flex;
+    flex-direction: column;
+    align-items: center;
+    width: 80%;
+}
+
+.about-text.paragraph{
+    font-size: 20px;
+}
+
 .gallery-container{
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(200px, auto));
@@ -89,6 +113,16 @@ img.layer-2 {
     margin: 0 auto;
     background-color: #e3e3e3;
 }
+
+.meme-gallery-item{
+    margin: 0;
+    display: flex;  
+}
+
+.meme-gallery-item canvas{
+    width: 100%;
+}
+
 
 img.gallery {
     width: 100%;
@@ -101,28 +135,26 @@ img.gallery {
 }
 
 .meme-container.canvas{
-    flex-grow: 3;
-    border: #ff7f00 solid 2px;
-    height: auto;
+    flex-grow: 2;
 }
 
-.meme-container-btns{
+.meme-container.btns{
     flex-grow: 1;
-    border: #ff7f00 solid 2px;
+    /* border: #ff7f00 solid 2px; */
     display: grid;
     grid-template-columns: repeat(5, minmax(35px, auto));
-    grid-auto-rows: minmax(100px, auto);
+    grid-auto-rows: minmax(90px, auto);
     grid-auto-flow: dense;
     gap: 10px;
     grid-template-areas:
     "txt-edit txt-edit txt-edit txt-edit txt-edit"
     "up down upDown _add trash"
     "incs decs _left _center _right"
-    "impact impact impact _stroke paint"
-    "stickers stickers stickers stickers stickers"
-    "stickers stickers stickers stickers stickers"
-    ". . . . share";
-    padding: 20px;
+    ". . _stroke paint ."
+    ". . . . ."
+    /* "stickers stickers stickers stickers stickers"
+    "stickers stickers stickers stickers stickers" */
+    ". . . save delete";
 }
 
 .meme-edit{
@@ -130,8 +162,8 @@ img.gallery {
     border: white;
     border-radius: 15px;
     min-width: 40px; 
-    height: 65px;
-    background-size: 50%;
+    height: 55px;
+    background-size: 40%;
     background-repeat: no-repeat;
     background-position: center;
 }
@@ -195,34 +227,50 @@ img.gallery {
     grid-area: _stroke;
 }
 
-.meme-edit.color{
-    grid-area: paint;
+.meme-edit.stroke-color{
+    grid-area: _stroke;
     z-index: -1;
 }
 
- .meme-edit.paint{
+.meme-edit.paint{
     background-image: url('../icons/paint-board-and-brush.png'); 
     grid-area: paint;
 } 
 
-.meme-edit.impact{
+.meme-edit.text-color{
+    grid-area: paint;
+    z-index: -1;
+}
+
+/* .meme-edit.impact{
     grid-area: impact;
-} 
+}  */
 
 .meme-edit.stickers{
     grid-area: stickers;
 } 
 
-.meme-edit.btn-save{
-    grid-area: share;
+.meme-edit.btn-action{
     background-color: var(--clr1);
     font-family: 'Montserrat', sans-serif;
     color: white;
     text-align: center;
+    padding: auto;
     font-weight: 800;
     font-size: 20px;
-    padding-top: 20px;
+    padding-top: 12px;
 } 
+
+.meme-edit.btn-action.save{
+    grid-area: save;
+    align-self: flex-end;
+} 
+
+.meme-edit.btn-action.delete{
+    grid-area: delete;
+    align-self: flex-end;
+} 
+
 
 .social-links {
     background-color: #ffff;

@@ -4,8 +4,10 @@ var gCtx
 var gItemForEdit
 
 function onLoad() {
+    loadMemesFromStorage()
     renderImagesGallery()
     memeContainer().style.display = 'none'
+    aboutSection().style.display = 'none'
 
     gCanvas = canvas()
     gCtx = gCanvas.getContext('2d')
@@ -24,7 +26,7 @@ function renderMemesGallery() {
     const memeGallery = memesGalleryContainer()
     let gridHtml = ''
 
-    gMemes.forEach(meme => gridHtml += `<div><canvas lass='gallery'  data-meme-id = '${meme.id}' onclick="onMemeClick('${meme.id}')"></canvas></div>`)
+    gMemes.forEach(meme => gridHtml += `<div class='meme-gallery-item'><canvas data-meme-id = '${meme.id}' onclick="onMemeClick('${meme.id}')"></canvas></div>`)
 
     memeGallery.innerHTML = gridHtml
     memeGallery.querySelectorAll('canvas').forEach(elmCanvas => drawMemeInGallery(elmCanvas))
@@ -58,20 +60,25 @@ function addEventListeners() {
     document.querySelector('.meme-edit.align-to-left').addEventListener('click', alignTextToLeft)
     document.querySelector('.meme-edit.align-to-center').addEventListener('click', alignTextToCenter)
     document.querySelector('.meme-edit.align-to-right').addEventListener('click', alignTextToRight)
-    document.querySelector('.meme-edit.impact').addEventListener('click', impact)
-    document.querySelector('.meme-edit.text-stroke').addEventListener('click', changeTextFontFamily)
+   // document.querySelector('.meme-edit.impact').addEventListener('click', impact)
+    document.querySelector('.meme-edit.text-stroke').addEventListener('click', openStrokeColorEditor)
+    strokeColorEditor().addEventListener('input', changeStrokeColor)
     document.querySelector('.meme-edit.paint').addEventListener('click', openTextColorEditor)
-    colorEditor().addEventListener('input', changeTextColor)
-    document.querySelector('.meme-edit.btn-save').addEventListener('click', saveMeme)
+    textColorEditor().addEventListener('input', changeTextColor)
+    document.querySelector('.meme-edit.btn-action.save').addEventListener('click', saveMeme)
+    document.querySelector('.meme-edit.btn-action.delete').addEventListener('click', deleteMeme)
 }
 
 function onGoToAbout() {
     clearCurrentMemeData()
     synchronizeMemeAndEditorText()
 
+
     imagesGalleryContainer().style.display = 'none'
     memesGalleryContainer().style.display = 'none'
     memeContainer().style.display = 'none'
+    aboutSection().style.display = ''
+    searchContainer().style.display = 'none'
 
     setMenuActiveItem(this)
 }
@@ -83,6 +90,7 @@ function onGoToImageGallery() {
     imagesGalleryContainer().style.display = ''
     memesGalleryContainer().style.display = 'none'
     memeContainer().style.display = 'none'
+    aboutSection().style.display = 'none'
 
     setMenuActiveItem(this)
 }
@@ -96,6 +104,7 @@ function onGoToMemeGallery() {
     imagesGalleryContainer().style.display = 'none'
     memesGalleryContainer().style.display = ''
     memeContainer().style.display = 'none'
+    aboutSection().style.display = 'none'
 
     setMenuActiveItem(this)
 }
@@ -136,13 +145,13 @@ function drawItemOnCanvas(ctx = gCtx, meme = gCurrMeme) {
     canvasImg.src = meme.url
     
     canvasImg.onload = () => {
+        ctx.imageSmoothingEnabled = false
         ctx.drawImage(canvasImg, 0, 0, gCanvas.width, gCanvas.height)
         updateTextAreaOnCanvas(ctx, meme)
     }
 }
 
 function updateTextAreaOnCanvas(ctx, meme) {
-    //const currentLine = meme.lines[meme.selectedLineIdx]
     meme.lines.forEach(line => drawText(ctx, line))
 }
 
@@ -152,24 +161,29 @@ function drawText(ctx, currentLine) {
     const text = currentLine.text ? currentLine.text : ''
     ctx.lineWidth = 1;
     ctx.textAlign = currentLine.align
-    ctx.strokeStyle = currentLine.color
+    ctx.strokeStyle = currentLine.strokeStyle
     ctx.fillStyle = currentLine.color
-    ctx.font = currentLine.fontSize + 'px ' + currentLine.fontFamily
+    ctx.font = currentLine.fontSize + 'px Arial Narrow' 
+    ctx.fillText(text, x, y);
     ctx.strokeText(text, x, y);
 
-    //setTextBorder(currentLine)
+    //setTextBorder(ctx, text)
 }
 
-function setTextBorder(currentLine) {
-    const x = canvas().getBoundingClientRect().top + 20;
-    const y = canvas().getBoundingClientRect().left + 20;
+function setTextBorder(ctx, text) {
+    const textMetrics = ctx.measureText(text, 0, text.length)
+    const x = (canvas().width/2 - ctx.measureText(text).actualBoundingBoxLeft) - 10
+    const y = textMetrics.fontBoundingBoxDescent//fontBoundingBoxAscent
+    const width = textMetrics.width + 20
+    const height = textMetrics.fontBoundingBoxAscent
 
-    gCtx.beginPath();
-    gCtx.rect(x, y, 150, 150);
-    gCtx.fillStyle = 'orange';
-    gCtx.fillRect(x, y, 150, 150);
-    gCtx.strokeStyle = 'black';
-    gCtx.stroke();
+    ctx.beginPath();
+    ctx.lineWidth = 1;
+    ctx.rect(x, y, width, height)
+    //ctx.fillStyle = 'orange';
+   // ctx.fillRect(x, y, 150, 150);
+    ctx.strokeStyle = 'black';
+    ctx.stroke();
 }
 
 function canvasCenterOnX() {
@@ -296,9 +310,9 @@ function alignTextToRight() {
     drawItemOnCanvas()
 }
 
-function impact() {
+// function impact() {
 
-}
+// }
 
 function changeTextFontFamily(inputId) {
 
@@ -309,8 +323,17 @@ function changeTextColor() {
     drawItemOnCanvas()
 }
 
+function changeStrokeColor(){
+    gCurrMeme.lines[gCurrMeme.selectedLineIdx].strokeStyle = this.value
+    drawItemOnCanvas()
+}
+
 function openTextColorEditor() {
-    colorEditor().click()
+    textColorEditor().click() 
+}
+
+function openStrokeColorEditor() {
+    strokeColorEditor().click() 
 }
 
 function saveMeme() {
@@ -324,6 +347,18 @@ function saveMeme() {
         gMemes.push(gCurrMeme)
     }
 
+    saveMemesToStorage()
+    clearCurrentMemeData()
+    onGoToMemeGallery()
+}
+
+function deleteMeme(){
+    const memeIndex = getMemeIndex(gCurrMeme.id)
+    if(memeIndex > -1){
+        gMemes.splice(memeIndex, 1)
+    }
+
+    saveMemesToStorage()
     clearCurrentMemeData()
     onGoToMemeGallery()
 }
@@ -334,6 +369,11 @@ function imagesGalleryContainer() {
 
 function memesGalleryContainer() {
     return document.querySelector('.gallery-container.memes')
+}
+
+function aboutSection(){
+    return document.querySelector('about')
+
 }
 
 function searchContainer() {
@@ -356,6 +396,10 @@ function memeText() {
     return document.querySelector(".memeText")
 }
 
-function colorEditor() {
-    return document.querySelector('.meme-edit.color')
+function textColorEditor() {
+    return document.querySelector('.meme-edit.text-color')
+}
+
+function strokeColorEditor() {
+    return document.querySelector('.meme-edit.stroke-color')
 }
