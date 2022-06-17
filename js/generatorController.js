@@ -159,6 +159,7 @@ function drawText(ctx, currentLine) {
     const x = canvasCenterOnX()
     const y = currentLine.y
     const text = currentLine.text ? currentLine.text : ''
+    
     ctx.lineWidth = 1;
     ctx.textAlign = currentLine.align
     ctx.strokeStyle = currentLine.strokeStyle
@@ -167,21 +168,13 @@ function drawText(ctx, currentLine) {
     ctx.fillText(text, x, y);
     ctx.strokeText(text, x, y);
 
-    //setTextBorder(ctx, text)
+    setTextBorder(ctx, y)
 }
 
-function setTextBorder(ctx, text) {
-    const textMetrics = ctx.measureText(text, 0, text.length)
-    const x = (canvas().width/2 - ctx.measureText(text).actualBoundingBoxLeft) - 10
-    const y = textMetrics.fontBoundingBoxDescent//fontBoundingBoxAscent
-    const width = textMetrics.width + 20
-    const height = textMetrics.fontBoundingBoxAscent
-
+function setTextBorder(ctx, y) {
     ctx.beginPath();
     ctx.lineWidth = 1;
-    ctx.rect(x, y, width, height)
-    //ctx.fillStyle = 'orange';
-   // ctx.fillRect(x, y, 150, 150);
+    ctx.rect(10, y-17, canvas().width - 20, 20)
     ctx.strokeStyle = 'black';
     ctx.stroke();
 }
