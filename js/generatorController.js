@@ -89,7 +89,6 @@ function onGoToAbout() {
     clearCurrentMemeData()
     synchronizeMemeAndEditorText()
 
-
     imagesGalleryContainer().style.display = 'none'
     memesGalleryContainer().style.display = 'none'
     memeContainer().style.display = 'none'
@@ -107,6 +106,7 @@ function onGoToImageGallery() {
     memesGalleryContainer().style.display = 'none'
     memeContainer().style.display = 'none'
     aboutSection().style.display = 'none'
+    searchContainer().style.display = ''
 
     setMenuActiveItem(this)
 }
@@ -121,6 +121,7 @@ function onGoToMemeGallery() {
     memesGalleryContainer().style.display = ''
     memeContainer().style.display = 'none'
     aboutSection().style.display = 'none'
+    searchContainer().style.display = 'none'
 
     setMenuActiveItem(this)
 }
