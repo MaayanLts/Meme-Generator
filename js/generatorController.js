@@ -1,7 +1,6 @@
 'use strict'
 var gCanvas
 var gCtx
-var gItemForEdit
 
 function onLoad() {
     loadMemesFromStorage()
@@ -9,10 +8,15 @@ function onLoad() {
     memeContainer().style.display = 'none'
     aboutSection().style.display = 'none'
 
-    gCanvas = canvas()
-    gCtx = gCanvas.getContext('2d')
-
     addEventListeners()
+
+    gCanvas = document.querySelector(".meme-container-canvas")
+    gCtx = gCanvas.getContext('2d')
+}
+
+function toggleMenu(elBtn) {
+    document.body.classList.toggle('menu-open');
+    document.body.classList.contains('menu-open') ? elBtn.innerText = 'X' : elBtn.innerText = '☰';
 }
 
 function renderImagesGallery() {
@@ -29,16 +33,16 @@ function renderMemesGallery() {
     gMemes.forEach(meme => gridHtml += `<div class='meme-gallery-item'><canvas data-meme-id = '${meme.id}' onclick="onMemeClick('${meme.id}')"></canvas></div>`)
 
     memeGallery.innerHTML = gridHtml
-    memeGallery.querySelectorAll('canvas').forEach(elmCanvas => drawMemeInGallery(elmCanvas))
+    memeGallery.querySelectorAll('.meme-gallery-item canvas').forEach(elmCanvas => drawMemeInGallery(elmCanvas))
 }
 
 function drawMemeInGallery(elmCanvas){
     const ctx = elmCanvas.getContext('2d') 
     const meme = getMeme(elmCanvas.dataset.memeId)
-    drawItemOnCanvas(ctx, meme)
+    drawItemOnCanvas(elmCanvas, ctx,  meme)
 }
 
-function addEventListeners() {
+function addEventListeners() { 
     //Main menu items click
     document.querySelector('.menu.image-gallery').addEventListener('click', onGoToImageGallery)
     document.querySelector('.menu.meme-gallery').addEventListener('click', onGoToMemeGallery)
@@ -60,7 +64,7 @@ function addEventListeners() {
     document.querySelector('.meme-edit.align-to-left').addEventListener('click', alignTextToLeft)
     document.querySelector('.meme-edit.align-to-center').addEventListener('click', alignTextToCenter)
     document.querySelector('.meme-edit.align-to-right').addEventListener('click', alignTextToRight)
-   // document.querySelector('.meme-edit.impact').addEventListener('click', impact)
+    //document.querySelector('.meme-edit.impact').addEventListener('click', impact)
     document.querySelector('.meme-edit.text-stroke').addEventListener('click', openStrokeColorEditor)
     strokeColorEditor().addEventListener('input', changeStrokeColor)
     document.querySelector('.meme-edit.paint').addEventListener('click', openTextColorEditor)
@@ -111,7 +115,12 @@ function onGoToMemeGallery() {
 
 function onMemeClick(memeId) {
     gCurrMeme = Object.assign({}, getMeme(memeId))
+
+    displayRelevantElements()
+
+   // gCanvas = canvas()
     openEditor()
+
     synchronizeMemeAndEditorText()
     memeTextEditor().focus()
 }
@@ -121,42 +130,44 @@ function onImageClick(imgId) {
     gCurrMeme.selectedImgId = img.id
     gCurrMeme.url = img.url
 
+    displayRelevantElements()
+
     openEditor()
 }
 
-function openEditor() {
-    gCanvas = document.querySelector('canvas')
-   // gCtx = gCanvas.getContext('2d') 
-    gCtx.clearRect(0, 0, gCanvas.width, gCanvas.height);
-    
-    drawItemOnCanvas()
-
-    //Display relevant elements
+function displayRelevantElements(){
     imagesGalleryContainer().style.display = 'none'
     memesGalleryContainer().style.display = 'none'
     memeContainer().style.display = 'flex'
     searchContainer().style.display = 'none'
-
     setMenuActiveItem()
 }
 
-function drawItemOnCanvas(ctx = gCtx, meme = gCurrMeme) {
+function openEditor() {
+    const canvasContainer = document.querySelector('.meme-container-canvas-container')
+    gCanvas.width = canvasContainer.clientWidth
+    gCanvas.height = canvasContainer.clientHeight
+ 
+    drawItemOnCanvas()
+}
+
+function drawItemOnCanvas(canvas = gCanvas, ctx = gCtx, meme = gCurrMeme) {
     var canvasImg = new Image()
     canvasImg.src = meme.url
     
     canvasImg.onload = () => {
-        ctx.imageSmoothingEnabled = false
-        ctx.drawImage(canvasImg, 0, 0, gCanvas.width, gCanvas.height)
-        updateTextAreaOnCanvas(ctx, meme)
+        ctx.beginPath()
+        ctx.drawImage(canvasImg, 0, 0, canvas.width, canvas.height)
+        updateTextAreaOnCanvas(canvas, ctx, meme)
     }
 }
 
-function updateTextAreaOnCanvas(ctx, meme) {
-    meme.lines.forEach(line => drawText(ctx, line))
+function updateTextAreaOnCanvas(canvas, ctx, meme) {
+    meme.lines.forEach(line => drawText(canvas, ctx, line))
 }
 
-function drawText(ctx, currentLine) {
-    const x = canvasCenterOnX()
+function drawText(canvas, ctx, currentLine) {
+    const x = canvasCenterOnX(canvas)
     const y = currentLine.y
     const text = currentLine.text ? currentLine.text : ''
     
@@ -165,27 +176,33 @@ function drawText(ctx, currentLine) {
     ctx.strokeStyle = currentLine.strokeStyle
     ctx.fillStyle = currentLine.color
     ctx.font = currentLine.fontSize + 'px Arial Narrow' 
+    ctx.beginPath()
     ctx.fillText(text, x, y);
     ctx.strokeText(text, x, y);
 
-    setTextBorder(ctx, y)
+    setTextBorder(canvas, ctx, y, currentLine.fontSize)
 }
 
-function setTextBorder(ctx, y) {
+function setTextBorder(canvas, ctx, y, fontSize) {
     ctx.beginPath();
+
+    const rectX = 50
+    const rectY = (y - fontSize) 
+    const rectHeight = fontSize + 12
+    const rectWidth = canvas.width - 100
     ctx.lineWidth = 1;
-    ctx.rect(10, y-17, canvas().width - 20, 20)
+    ctx.rect(rectX, rectY, rectWidth, rectHeight)
     ctx.strokeStyle = 'black';
     ctx.stroke();
 }
 
-function canvasCenterOnX() {
-    const x = Math.floor(canvas().width / 2)
+function canvasCenterOnX(canvas) {
+    const x = Math.floor(canvas.width / 2)
     return x
 }
 
-function canvasCenterOnY() {
-    const y = Math.floor(canvas().height / 2)
+function canvasCenterOnY(canvas) {
+    const y = Math.floor(canvas.height / 2)
     return y
 }
 
@@ -249,11 +266,11 @@ function addNewTextArea() {
 
     const selectedLine = gCurrMeme.lines[gCurrMeme.selectedLineIdx]
     if (gCurrMeme.lines.length == 2) {
-        //Add second line to the buttom
-        selectedLine.y = canvas().height - 20
+        //Add second text to the buttom
+        selectedLine.y = gCanvas.height - 20
     } else {
-        //Add all other lines to the middle
-        selectedLine.y = canvasCenterOnY()
+        //Add all other texts to the middle
+        selectedLine.y = canvasCenterOnY(gCanvas)
     }
 
     const editor = memeTextEditor()
@@ -303,12 +320,8 @@ function alignTextToRight() {
     drawItemOnCanvas()
 }
 
-// function impact() {
-
-// }
-
-function changeTextFontFamily(inputId) {
-
+function impact() {
+    
 }
 
 function changeTextColor() {
@@ -366,7 +379,6 @@ function memesGalleryContainer() {
 
 function aboutSection(){
     return document.querySelector('about')
-
 }
 
 function searchContainer() {
@@ -375,10 +387,6 @@ function searchContainer() {
 
 function memeContainer() {
     return document.querySelector('.meme-container')
-}
-
-function canvas() {
-    return document.querySelector(".meme-container.canvas")
 }
 
 function memeTextEditor() {

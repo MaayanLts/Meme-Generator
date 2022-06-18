@@ -34,12 +34,12 @@ function _creteNewMeme(){
 function _createNewLine(){
     return{
         text: '',
-        fontSize: 20,
+        fontSize: 30,
         align: 'center',
         color: 'black',
         strokeStyle: 'black',
         //fontFamily: 'Montserrat',
-        y: 20
+        y: 50
     }
 }
 

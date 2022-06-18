@@ -10,14 +10,15 @@
 </head>
 
 <body onload="onLoad()">
-    <div class="header-main">
+    <div class="top-header">
         <div class="nav-bar-container">
-            <img src="logo/Layer 2.png" srcset="logo/Layer 2@2x.png, logo/Layer 2@3x.png" class="layer-2">
+            <img src="logo/Layer 2.png" srcset="logo/Layer 2@2x.png, logo/Layer 2@3x.png" class="logo">
             <ul class="nav-bar flex clean-list">
                 <li class='menu image-gallery'><a href="#" class="active">Gallery</a></li>
                 <li class='menu meme-gallery'><a href="#">Memes</a></li>
                 <li class='menu about'><a href="#">About</a></li>
             </ul>
+            <!-- <button onclick="toggleMenu(this)" class="menu-toggle">☰</button> -->
         </div>
         <div class="search-container">
             <div class="input-container">
@@ -32,8 +33,11 @@
     <section class="gallery-container memes"></section>
 
     <section class="meme-container">
-        <canvas class="meme-container canvas"></canvas>
-        <div class='meme-container btns'>
+        <div class="meme-container-canvas-container">
+            <canvas class="meme-container-canvas"></canvas>
+        </div>
+        
+        <div class='meme-container-btns'>
             <input class="meme-edit text-editor" type="text" placeholder="Insert text here...">
             <div class="meme-edit up"></div>
             <div class="meme-edit down"></div>
@@ -46,14 +50,10 @@
             <div class="meme-edit align-to-center" title="align center"></div>
             <div class="meme-edit align-to-right" title="align right"></div>
             <div class="meme-edit text-stroke"></div>
-            <input class="meme-edit stroke-color" type='color' value="#ffffff">
+            <input class="meme-edit stroke-color" type='color' value="#ffffff" />
             <div class="meme-edit paint"></div>
-            <input class="meme-edit text-color" type='color' value="#ffffff">
-            <!-- <select class="meme-edit impact">
-                <option value="1">1</option>
-                <option value="2">2</option>
-                <option value="3">3</option>
-            </select> -->
+            <input class="meme-edit text-color" type='color' value="#ffffff" />
+            <!-- <div class="meme-edit impact"></div> -->
             <!-- <div class="meme-edit stickers"></div> -->
             <div class="meme-edit btn-action save">Save</div>
             <div class="meme-edit btn-action delete">Delete</div>
