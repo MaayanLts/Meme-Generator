@@ -21,7 +21,14 @@ function toggleMenu(elBtn) {
 
 function renderImagesGallery() {
     let gridHtml = ''
-    gImgs.forEach(img => gridHtml += `<img class='gallery' src="./img/${img.id}.jpg" alt="" onclick='onImageClick(${img.id})'>`)
+    const keyWord = document.querySelector('.search-input').value
+    let imgs = gImgs
+
+    if(keyWord){
+        imgs = imgs.filter(img => img.keywords.includes(keyWord))
+    }
+
+    imgs.forEach(img => gridHtml += `<img class='gallery' src="./img/${img.id}.jpg" alt="" onclick='onImageClick(${img.id})'>`)
 
     imagesGalleryContainer().innerHTML = gridHtml
 }
@@ -48,6 +55,7 @@ function addEventListeners() {
     document.querySelector('.menu.meme-gallery').addEventListener('click', onGoToMemeGallery)
     document.querySelector('.menu.about').addEventListener('click', onGoToAbout)
 
+    document.querySelector('.search-input').addEventListener('input', filterImagesByKeyWords)
     //Prevent default on all editor buttons
     document.querySelectorAll(".meme-edit").forEach(el =>
         el.addEventListener('contextmenu', e => e.preventDefault())
@@ -71,6 +79,10 @@ function addEventListeners() {
     textColorEditor().addEventListener('input', changeTextColor)
     document.querySelector('.meme-edit.btn-action.save').addEventListener('click', saveMeme)
     document.querySelector('.meme-edit.btn-action.delete').addEventListener('click', deleteMeme)
+}
+
+function filterImagesByKeyWords(){
+    renderImagesGallery() 
 }
 
 function onGoToAbout() {
