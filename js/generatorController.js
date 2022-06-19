@@ -1,6 +1,7 @@
 'use strict'
 var gCanvas
 var gCtx
+var gDrawTextRect 
 
 function onLoad() {
     loadMemesFromStorage()
@@ -46,6 +47,7 @@ function renderMemesGallery() {
 function drawMemeInGallery(elmCanvas){
     const ctx = elmCanvas.getContext('2d') 
     const meme = getMeme(elmCanvas.dataset.memeId)
+    gDrawTextRect = false
     drawItemOnCanvas(elmCanvas, ctx,  meme)
 }
 
@@ -82,6 +84,7 @@ function addEventListeners() {
 }
 
 function filterImagesByKeyWords(){
+    autoFill
     renderImagesGallery() 
 }
 
@@ -131,7 +134,6 @@ function onMemeClick(memeId) {
 
     displayRelevantElements()
 
-   // gCanvas = canvas()
     openEditor()
 
     synchronizeMemeAndEditorText()
@@ -146,6 +148,9 @@ function onImageClick(imgId) {
     displayRelevantElements()
 
     openEditor()
+
+    synchronizeMemeAndEditorText()
+    memeTextEditor().focus()
 }
 
 function displayRelevantElements(){
@@ -161,6 +166,7 @@ function openEditor() {
     gCanvas.width = canvasContainer.clientWidth
     gCanvas.height = canvasContainer.clientHeight
  
+    gDrawTextRect = true
     drawItemOnCanvas()
 }
 
@@ -193,7 +199,8 @@ function drawText(canvas, ctx, currentLine) {
     ctx.fillText(text, x, y);
     ctx.strokeText(text, x, y);
 
-    setTextBorder(canvas, ctx, y, currentLine.fontSize)
+    if(gDrawTextRect)
+        setTextBorder(canvas, ctx, y, currentLine.fontSize)
 }
 
 function setTextBorder(canvas, ctx, y, fontSize) {
@@ -261,7 +268,6 @@ function synchronizeMemeAndEditorText() {
     const editor = memeTextEditor()
     const line = gCurrMeme.lines[gCurrMeme.selectedLineIdx]
     editor.value = line.text
-    editor.style.color = line.color
 }
 
 function moveTextUpDown(ev) {

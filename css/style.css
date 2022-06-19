@@ -243,8 +243,8 @@ img.gallery {
     text-align: center;
     padding: auto;
     font-weight: 800;
-    font-size: 20px;
-    padding-top: 12px;
+    font-size: 16px;
+    padding: 15px 0 0 0;
 } 
 
 .meme-edit.btn-action.save{
@@ -274,7 +274,7 @@ img.gallery {
     width: 100%;
     /* height: 20px; */
     /* margin: 4.4px 0 0; */
-    font-family: Montserrat;
+    font-family: 'Montserrat';
     font-size: 9.5px;
     font-weight: 100;
     font-stretch: normal;

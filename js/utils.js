@@ -1,13 +1,17 @@
 
 'use strict'
 
-function getMemeId(length = 6) {
+function getRandomString(length = 6) {
     const possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
     //const possible = '0123456789'
     var txt = ''
     for (var i = 0; i < length; i++) {
-        txt += possible.charAt(Math.floor(Math.random() * possible.length))
+        txt += possible.charAt()
     }
 
     return txt
+}
+
+function getRandomRandomIndex(possibleLength){
+    return Math.floor(Math.random() * possibleLength)
 }
